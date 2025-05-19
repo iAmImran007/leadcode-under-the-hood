@@ -25,6 +25,15 @@ func main() {
 		problem1 := Problem{
 			Title:       "Sum of Two Numbers",
 			Description: "Write a program that reads two integers from standard input and outputs their sum.\n\n**Input**: Two integers a and b (separated by a space)\n**Output**: The sum of a and b",
+			HaderFile: `#include <bits/stdc++.h> 
+			              using namespace std;`,
+			FuncBody: "int sum(int num1, int num2){ \n\n}",
+			MainFunc: `int main() {
+                            int a, b;
+                            cin >> a >> b;
+                            cout << sum(a, b);
+                            return 0;
+                        }`,
 			TestCases: []TestCase{
 				{Input: "1 2", ExpectedOutput: "3"},
 				{Input: "10 5", ExpectedOutput: "15"},
@@ -37,6 +46,17 @@ func main() {
 		problem2 := Problem{
 			Title:       "Reverse String",
 			Description: "Write a program that reads a string from standard input and outputs the string in reverse order.\n\n**Input**: A string (up to 100 characters)\n**Output**: The string in reverse order",
+			HaderFile: `#include <bits/stdc++.h> 
+			              using namespace std;`,
+			FuncBody: `string reverseString(string s) {
+			            
+			             }`,
+			MainFunc: `int main() {
+                               string s;
+                               cin >> s;
+                               cout << reverseString(s);
+                               return 0;
+                           }`,
 			TestCases: []TestCase{
 				{Input: "hello", ExpectedOutput: "olleh"},
 				{Input: "algorithm", ExpectedOutput: "mhtirogla"},
@@ -49,6 +69,17 @@ func main() {
 		problem3 := Problem{
 			Title:       "Check Prime Number",
 			Description: "Write a program that determines if a given number is a prime number.\n\n**Input**: An integer n\n**Output**: 'Prime' if n is a prime number, 'Not Prime' otherwise",
+			HaderFile: `#include <bits/stdc++.h> 
+			              using namespace std;`,
+			FuncBody: `int isPrime(int n) {
+			
+			           }`,
+			MainFunc: `int main() {
+                             int n;
+                             cin >> n;
+                             cout << isPrime(n);
+                             return 0;
+                         }`,
 			TestCases: []TestCase{
 				{Input: "7", ExpectedOutput: "Prime"},
 				{Input: "15", ExpectedOutput: "Not Prime"},
