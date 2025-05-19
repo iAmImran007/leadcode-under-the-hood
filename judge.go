@@ -14,7 +14,7 @@ type JudgeResult struct {
 	FailedCases []int    `json:"failed_cases"`
 }
 
-func JudgeCode(code string, testCases []TestCase) (JudgeResult, error) {
+func JudgeCode(problemId uint, code string, testCases []TestCase) (JudgeResult, error) {
 	// Create temp directory for this submission
 	tempDir, err := os.MkdirTemp("", "submission_*")
 	if err != nil {
@@ -29,15 +29,26 @@ func JudgeCode(code string, testCases []TestCase) (JudgeResult, error) {
 	outputFile := filepath.Join(tempDir, "output.txt")
 	expectedFile := filepath.Join(tempDir, "expected.txt")
 
-	// Write code to file
-	err = os.WriteFile(codeFile, []byte(code), 0644)
-	if err != nil {
-		return JudgeResult{}, fmt.Errorf("failed to write code: %v", err)
+	//fetch hader file and main func from db
+	db := Db{}
+	ConnectDb(&db)
+
+	var problem Problem
+	fetchErr := db.GetDb().
+	Select("hader_file", "main_func").
+	Where("id = ?", problemId).
+	First(&problem).Error
+
+	if fetchErr != nil {
+		return JudgeResult{}, fmt.Errorf("feild to fetch main and hader file %v", fetchErr)
 	}
 
-	// Write a main function wrapper for C++ if it doesn't have one
-	if !strings.Contains(code, "main(") {
-		return JudgeResult{}, fmt.Errorf("code must contain a main() function")
+	//join the hader + user code + main file in the code 
+	fullCode := problem.HaderFile + "\n" + code + "\n" + problem.MainFunc
+
+	err = os.WriteFile(codeFile, []byte(fullCode), 0644)
+	if err != nil {
+		return JudgeResult{}, fmt.Errorf("feild to wtite the full code in the c++ file")
 	}
 
 	// Compile inside Docker

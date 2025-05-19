@@ -68,6 +68,9 @@ func handleProblem(w http.ResponseWriter, r *http.Request) {
 		"title":       problem.Title,
 		"description": problem.Description,
 		"samples":     []map[string]string{},
+		"func_body": problem.FuncBody,
+		"hader_file": problem.HaderFile,
+		"main_func":  problem.MainFunc,
 	}
 
 	// Add sample inputs (first 2 test cases)
@@ -86,6 +89,12 @@ func handleProblem(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+
+type Submission struct {
+	Code string `json:"code"`
+}
+
+
 // Handle POST /submit/{id} - Handles code submission
 func handleCodeSubmission(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -95,9 +104,7 @@ func handleCodeSubmission(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var submission struct {
-		Code string `json:"code"`
-	}
+	var submission Submission
 
 	if err := json.NewDecoder(r.Body).Decode(&submission); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -117,9 +124,14 @@ func handleCodeSubmission(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Problem not found", http.StatusNotFound)
 		return
 	}
+	
 
 	fmt.Printf("Judging submission for problem #%d\n", problemID)
-	result, err := JudgeCode(submission.Code, problem.TestCases)
+
+	//get url query
+	//title := r.URL.Query().Get("title")
+
+	result, err := JudgeCode(problem.ID,submission.Code, problem.TestCases)
 	if err != nil {
 		http.Error(w, "Error while judging: "+err.Error(), http.StatusInternalServerError)
 		return
