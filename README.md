@@ -40,3 +40,9 @@ This is a simplified version of an online judge system:
 ```bash
 git clone https://github.com/iAmImran007/leadcode-under-the-hood.git
 cd leadcode-under-the-hood
+
+
+## 🚀 Upgraded Version Available
+
+Looking for the next version of this project?    
+👉 [Code_War](https://github.com/iAmImran007/Code_War)
